@@ -1,8 +1,15 @@
 // Copyright 2016 Chao Wang <hit9@icloud.com>
 
-// Package trie implements a in-memory trie tree.
-// Reference: Trie - Wikipedia, the free encyclopedia
-// Goroutine safety: No. Lock granularity depends on the use case.
+// Package trie implements= a in-memory trie tree.
+//
+// Reference
+//
+// Trie - Wikipedia, the free encyclopedia
+//
+// Goroutine safety
+//
+// No. Lock granularity depends on the use case.
+//
 package trie
 
 import (
