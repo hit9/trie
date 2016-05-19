@@ -1,10 +1,8 @@
 // Copyright 2016 Chao Wang <hit9@icloud.com>
 
-// Package trie implements= a in-memory trie tree.
+// Package trie implements a in-memory trie tree.
 //
-// Reference
-//
-// Trie - Wikipedia, the free encyclopedia
+// Reference: https://en.wikipedia.org/wiki/Trie
 //
 // Goroutine safety
 //
