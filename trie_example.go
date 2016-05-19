@@ -21,4 +21,6 @@ func main() {
 	fmt.Println(tr.Get("a.b.c.d.e"))
 	fmt.Println(tr.Get("a.b.m.n.p"))
 	fmt.Println(tr.Get("a.b.m.s.t"))
+	m := tr.Match("a.*.m.*.*")
+	fmt.Println(m) // map[a.b.m.s.t:data5 a.b.m.n.p:data4]
 }
