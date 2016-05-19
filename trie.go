@@ -46,6 +46,7 @@ func New(delim string) *Trie {
 func (tr *Trie) Len() int { return tr.length }
 
 // Put an item to the trie.
+// Replace if the key conflicts.
 func (tr *Trie) Put(key string, value interface{}) {
 	parts := strings.Split(key, tr.delim)
 	t := tr.root
@@ -68,6 +69,7 @@ func (tr *Trie) Put(key string, value interface{}) {
 }
 
 // Get an item from the trie.
+// Returns nil if the given key is not in the trie.
 func (tr *Trie) Get(key string) interface{} {
 	parts := strings.Split(key, tr.delim)
 	t := tr.root
@@ -181,6 +183,35 @@ func (t *tree) _map(delim string, keys []string) map[string]interface{} {
 		d := child._map(delim, append(keys, segment))
 		for key, value := range d {
 			m[key] = value
+		}
+	}
+	return m
+}
+
+// Matched uses the trie items as the wildcard like patterns, filters out the
+// items matches the given string.
+// Returns an empty map if the given strings matches no patterns.
+func (tr *Trie) Matched(s string) map[string]interface{} {
+	return tr.root.matched(tr.delim, nil, strings.Split(s, tr.delim))
+}
+
+// matched returns the patterns matched the given string.
+func (t *tree) matched(delim string, keys, parts []string) map[string]interface{} {
+	m := make(map[string]interface{})
+	if len(parts) == 0 && t.value != nil {
+		m[strings.Join(keys, delim)] = t.value
+		return m
+	}
+	if len(parts) > 0 {
+		if child, ok := t.children["*"]; ok {
+			for k, v := range child.matched(delim, append(keys, "*"), parts[1:]) {
+				m[k] = v
+			}
+		}
+		if child, ok := t.children[parts[0]]; ok {
+			for k, v := range child.matched(delim, append(keys, parts[0]), parts[1:]) {
+				m[k] = v
+			}
 		}
 	}
 	return m

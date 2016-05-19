@@ -162,6 +162,43 @@ func TestMap(t *testing.T) {
 	Must(t, m["a.b.c.d.e.f"].(int) == 61)
 }
 
+func TestMatched(t *testing.T) {
+	tr := New(".")
+
+	p1 := "a.b.c.d.e.f"
+	p2 := "a.b.c.d.*.f"
+	p3 := "*.b.c.d.*.f"
+	p4 := "*.b.c.d.*"
+	p5 := "*"
+	p6 := ""
+
+	tr.Put(p1, 1)
+	tr.Put(p2, 2)
+	tr.Put(p3, 3)
+	tr.Put(p4, 4)
+	tr.Put(p5, 5)
+	tr.Put(p6, 6)
+
+	var m map[string]interface{}
+
+	m = tr.Matched("a.b.c.d.e.f")
+	Must(t, len(m) == 3)
+	Must(t, m[p1].(int) == 1)
+	Must(t, m[p2].(int) == 2)
+	Must(t, m[p3].(int) == 3)
+
+	m = tr.Matched("a.b.c.d.e")
+	Must(t, len(m) == 1)
+	Must(t, m[p4].(int) == 4)
+
+	m = tr.Matched("a")
+	Must(t, len(m) == 1)
+	Must(t, m[p5].(int) == 5)
+
+	m = tr.Matched("not.matched")
+	Must(t, len(m) == 0)
+}
+
 func BenchmarkPutRandKeys(b *testing.B) {
 	tr := New(".")
 	b.ResetTimer()
