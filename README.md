@@ -3,7 +3,7 @@ Trie
 
 Package trie implements a in-memory trie tree.
 
-https://godoc.org/github.com/hit9/trie
+https://pkg.go.dev/github.com/hit9/trie
 
 Example
 -------
